@@ -6,33 +6,50 @@
 
 **Building reliable AI systems from models to applications.**
 
-모델을 만드는 데서 끝내지 않고, 실제 환경의 데이터·추론·검증·운영 흐름까지 연결합니다.
-
-[![GitHub](https://img.shields.io/badge/GitHub-bae--kh-181717?style=flat-square&logo=github)](https://github.com/bae-kh)
+Computer Vision 연구 경험에서 출발해 LLM/AX와 AI Backend로 확장했습니다.<br>
+모델 성능뿐 아니라 **평가 조건, 실패 처리, 추론 파이프라인, 서비스 연동**까지 함께 설계합니다.
 
 </div>
 
-## About Me
+## Featured Projects
+
+### 1. [XROSS Edge AI](https://github.com/SEJONG-XROSS/xross-ai)
+
+`Edge AI` · `Computer Vision` · `Team Project`
+
+- **Problem** — 영상만으로는 가림과 배경 움직임에 취약하고, 무게센서만으로는 Pick/Put의 행동 의미를 구분하기 어려운 무인매장 시나리오를 다뤘습니다.
+- **Built** — 팀에서 Edge AI와 sensor-event 연동을 중심으로 참여해 YOLOv8·ByteTrack 고객 context, TSM/ResNet50 행동 인식, MQTT trigger, vision-weight cross-validation, backend payload와 SQLite DLQ/retry를 연결했습니다.
+- **Evidence / Limit** — RTX 4070 Ti에서 TSM model-only latency **11.82ms → 2.44ms**, PyTorch–TensorRT FP16 class prediction **156/156 일치**를 확인했습니다. 저장 clip 기준이며 live RTSP E2E나 새로운 환경의 일반화 결과는 아닙니다. [검증 보고서](https://github.com/SEJONG-XROSS/xross-ai/blob/main/optimization/results/model-optimization-report.md)
+
+### 2. [LLM Financial Reporting](https://github.com/bae-kh/llm-financial-reporting-pipeline)
+
+`LLM / AX` · `Workflow Automation` · `Evaluation`
+
+- **Problem** — 정확해야 하는 금융 계산과 확률적인 LLM 해석을 분리하고, 외부 데이터·모델 실패가 정상 결과처럼 보이지 않도록 설계했습니다.
+- **Built** — Python 지표 계산, 뉴스 snapshot·필터링, Structured Outputs 이후의 evidence·의미 검증, 재작성·fallback·run tracking을 구성했습니다. 검증된 workflow 위에는 주문·추천 기능이 없는 제한된 3-tool Agent를 연결했습니다.
+- **Evidence / Limit** — 회귀 테스트 **170개**가 통과하며, 공개 TSLA 실행에서 미근거 주가 전망을 거부하고 1회 재작성했습니다. Live 결과는 1회 실행과 headline metadata 기반 분석입니다. [실행 샘플](https://github.com/bae-kh/llm-financial-reporting-pipeline/blob/main/reports/samples/TSLA_2024-12_live_llm_sample.md)
+
+### 3. [AI Text Moderation Backend](https://github.com/bae-kh/text-moderation-api)
+
+`AI Backend` · `Model Serving` · `Operations`
+
+- **Problem** — 한국어 유해 표현 모델의 category·confidence를 API 응답에 그치지 않고 실제 검토 정책과 운영 흐름으로 연결했습니다.
+- **Built** — FastAPI model lifecycle과 threadpool 추론, `allow / review / block` 정책, PostgreSQL review queue, Alembic, Admin API, structured logging, Docker Compose와 CI를 구성했습니다.
+- **Evidence / Limit** — 자동화 테스트 **28개**, Docker health smoke test와 Locust 부하 테스트를 구성했습니다. Threshold는 60건 pilot의 56개 조합을 비교한 baseline이며 production 최적값이 아닙니다. [Calibration 근거](https://github.com/bae-kh/text-moderation-api/blob/main/calibration_results/calibration_report.md)
+
+### 4. [Soccer Shot Analyzer](https://github.com/bae-kh/soccer-shot-analyzer)
+
+`Computer Vision` · `FastAPI / SSE` · `React`
+
+- **Problem** — 단일 카메라 축구 영상의 CV 분석을 사용자가 업로드하고 진행률과 결과를 확인할 수 있는 서비스 흐름으로 연결했습니다.
+- **Built** — YOLOv8 공 검출, CSRT tracking fallback, YOLOv8-seg 골대 분할, SciPy trajectory fitting을 FastAPI background execution, SSE streaming, React UI와 연결했습니다.
+- **Evidence / Limit** — 공개 demo에서 upload → progress → result 흐름을 확인했습니다. 속도와 궤적은 제한된 sample 영상의 추정값이며 radar·IMU·multi-view Ground Truth로 검증한 정확도가 아닙니다.
+
+## Background
 
 - 세종대학교 컴퓨터공학 전공
 - Computer Vision 연구실 학부연구생
-- Edge AI, LLM Application, AI Model Serving 프로젝트 경험
-- 성능 수치뿐 아니라 **평가 조건, 실패 처리, 재현 가능성**까지 설명할 수 있는 시스템을 지향합니다.
-
-## Featured Projects
-
-| Project | What I Built | Key Evidence |
-|---|---|---|
-| **[XROSS Edge AI](https://github.com/SEJONG-XROSS/xross-ai)** | YOLOv8·ByteTrack 고객 추적, TSM/ResNet50 행동 인식, MQTT 무게센서 교차검증, Backend event 연동 | TensorRT FP16 적용 후 model-only latency **11.82ms → 2.42ms**, prediction parity **156/156** · 창의설계 경진대회 대상 |
-| **[LLM Financial Reporting](https://github.com/bae-kh/llm-financial-reporting-pipeline)** | 금융 수치는 Python, 뉴스 해석은 LLM으로 분리하고 validation·retry·fallback·run tracking 설계 | **170 pytest passed** · 실제 TSLA end-to-end 실행 및 근거 없는 생성 결과 재작성 검증 |
-| **[AI Text Moderation Backend](https://github.com/bae-kh/text-moderation-api)** | 한국어 유해 표현 모델을 FastAPI로 서빙하고 allow/review/block 정책과 운영자 검토 흐름 구현 | PostgreSQL·Alembic·Admin API·Docker Compose·CI·structured logging·Locust 부하 테스트 |
-| **[Soccer Shot Analyzer](https://github.com/bae-kh/soccer-shot-analyzer)** | 단일 카메라 CV 분석을 FastAPI background task, SSE progress, React UI로 연결 | YOLOv8 detection/segmentation · CSRT fallback · trajectory fitting · end-to-end demo |
-
-## What I Care About
-
-- **Reliable AI** — 모델 출력의 검증 기준과 실패 상태를 명확히 설계합니다.
-- **Production Connection** — 추론 결과를 API, 데이터베이스, 센서, 사용자 화면까지 연결합니다.
-- **Evidence over Claims** — latency, regression test, evaluation artifact와 한계를 함께 기록합니다.
+- **Evidence over Claims** — 결과와 함께 평가 조건, 실패 상태, 재현 범위를 기록합니다.
 
 ## Tech Stack
 
@@ -55,8 +72,3 @@
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?style=flat-square&logo=postgresql&logoColor=white)
 ![Docker](https://img.shields.io/badge/Docker-2496ED?style=flat-square&logo=docker&logoColor=white)
 ![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-2088FF?style=flat-square&logo=githubactions&logoColor=white)
-
----
-
-> Computer Vision 연구 경험을 바탕으로 LLM과 AI Backend까지 확장하며,  
-> AI 모델을 **측정 가능하고 신뢰할 수 있는 서비스**로 만드는 과정을 공부하고 있습니다.
